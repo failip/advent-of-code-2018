@@ -13,7 +13,27 @@ def part_one():
             if (ID.count(l) == 3):
                 thrice += 1
                 break
+    f.close()
     print(f'Twice: {twice}, Thrice: {thrice}, Checksum: {twice*thrice}')
 
 part_one()
 
+def part_two():
+    f = open('input', 'r')
+    length = len('wlpiogsvdfecjdqmnxakudrhbz')
+    found_correct = False
+    for ID in f:
+        f2 = open('input', 'r')
+        for ID2 in f2:
+            difference_positions = []
+            for i in range(length):   
+                if ID[i] != ID2[i]:
+                    difference_positions.append(i)
+            if len(difference_positions) == 1:
+                found_correct = True
+                break
+        if found_correct:
+            print(ID[:difference_positions[0]] + ID[difference_positions[0]+1:])
+            break
+        
+part_two()
