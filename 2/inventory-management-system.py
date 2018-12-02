@@ -33,7 +33,9 @@ def part_two():
                 found_correct = True
                 break
         if found_correct:
-            print(ID[:difference_positions[0]] + ID[difference_positions[0]+1:])
+            print(f'1st ID: {ID[:-1]}')
+            print(f'2nd ID: {ID2[:-1]}')
+            print(f'Without Difference: {(ID[:difference_positions[0]] + ID[difference_positions[0]+1:])[:-1]}')
             break
         
 part_two()
