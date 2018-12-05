@@ -2,9 +2,9 @@ from subprocess import call
 import numpy as np
 
 class Guard:
-    sleep = 0
     def __init__(self, ID):
         self.ID = ID
+        self.sleep = 0
         self.minutes_slept = 0
         self.most_slept_minute = 0
         self.minutes = np.zeros(60)
