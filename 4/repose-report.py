@@ -36,6 +36,7 @@ for line in f:
             guard.fall_asleep(time)
         else:
             guard.wake_up(time)
+f.close()
 
 max_time_asleep = 0
 guard_longest_asleep = None
