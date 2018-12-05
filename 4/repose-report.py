@@ -19,7 +19,6 @@ class Guard:
         self.most_slept_minute = self.minutes.max()
 
 call("sort input -o sorted", shell = True) 
-open('sorted','r')
 f = open('sorted', 'r')
 guards = {}
 for line in f:
