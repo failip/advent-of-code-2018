@@ -26,7 +26,7 @@ for line in f:
         splitted = line.split(' ')
         ID = int(splitted[3][1:])
         guard = guards.get(ID)
-        if(not guard):
+        if not guard:
             guard = Guard(ID)
             guards[ID] = guard
     else:
