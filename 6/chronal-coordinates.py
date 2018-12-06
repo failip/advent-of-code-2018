@@ -8,7 +8,7 @@ class Point:
 
 class Map:
     def __init__(self):
-        self.grid = np.zeros((360,360), dtype=(np.int32, np.int32))
+        self.grid = np.zeros((360,360), dtype=(np.int8, np.int8))
         self.points = {}
         self.finite_points = {}
 
@@ -88,12 +88,12 @@ def part_one():
                 if (m.grid[x][y] == key):
                     finite_areas[key] += 1
     max_name = max(finite_areas.items(), key=operator.itemgetter(1))[0]
-    max_area = finite_areas[max_name
+    max_area = finite_areas[max_name]
     print('Part One:')
     print(f'Maximum area: {max_area}')
 
 def part_two():
-    m.grid = np.zeros((360,360),dtype=(np.int32,np.int32))
+    m.grid = np.zeros((360,360),dtype=(np.int8,np.int8))
     m.fill_grid_part_two()
     print('Part Two:')
     print(f'Area with distance less than 10000: {np.count_nonzero(m.grid)}')
