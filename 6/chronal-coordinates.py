@@ -6,7 +6,7 @@ from string import ascii_uppercase
 
 class Map:
     def __init__(self):
-        self.grid = np.zeros((360,360),dtype=(np.int64,np.int64))
+        self.grid = np.zeros((360,360),dtype=(np.int8,np.int8))
         self.points = {}
         self.finite_points = {}
 
@@ -15,32 +15,30 @@ class Map:
     
     def calculate_finite_points(self, name):
         point = self.points[name]
-        first_point = None
-        second_point = None
-        third_point = None
-        for key in self.points:
-            if key != name:
-                if not first_point:
-                    first_point = self.points[key]
-                elif not second_point:
-                    second_point = self.points[key]
-                elif not third_point:
-                    third_point = self.points[key]
-                else:
-                    third_point = second_point
-                    second_point = first_point
-                    first_point = self.points[key]
+        found_triangle = False
+        for key1 in self.points:
+            for key2 in self.points:
+                if key1 == key2:
+                    pass
+                for key3 in self.points:
+                    if key3 == key2:
+                        pass
+                    first_point = self.points[key1]
+                    second_point = self.points[key2]
+                    third_point = self.points[key3]
                     triangle = Polygon([(first_point.x, first_point.y), 
                                         (second_point.x, second_point.y), 
                                         (third_point.x, third_point.y)])
                     if triangle.contains(point):
                         self.finite_points[name] = point
+                        found_triangle = True
                         break
-
+            if found_triangle:
+                break
+                                        
     def fill_grid(self):
         for x in range(len(self.grid)):
             for y in range(len(self.grid[0])):
-                print(x,y)
                 closest_point = None
                 closest_distance = 100000
                 two_point = False
@@ -73,17 +71,26 @@ for line in f:
     m.add_point(i, x, y)
     i += 1
 
+print('Calculating points with finite areas...')
 for key in m.points:
+    print(key)
     m.calculate_finite_points(key)
+print('finished\n')
 
-#calculated with fill_grid
+print('Calculating fill grid...')
 m.fill_grid()
+print('finished')
 np.save('./manhatten_array', m.grid)
 #m.grid = np.load('./manhatten_array.npy')
-for x in range(len(m.grid)):
-    print(len(np.bincount(m.grid[x])))
 
-print(m.finite_points.keys())
+finite_areas = {}
+for key in m.finite_points:
+    finite_areas[key] = 0
+    for x in range(len(m.grid)):
+        for y in range(len(m.grid[0])):
+            if (m.grid[x][y] == key):
+                finite_areas[key] += 1
+print(finite_areas)
 
 
 
