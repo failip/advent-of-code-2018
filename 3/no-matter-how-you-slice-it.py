@@ -48,6 +48,7 @@ def fill_the_cloth():
         y_size = int(y_size)
         if(fabric.is_intact(x,y,x_size,y_size)):
             print(splitted[0])
+            break
     f.close()
 
 fill_the_cloth()

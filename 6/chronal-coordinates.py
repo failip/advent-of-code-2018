@@ -81,7 +81,7 @@ for line in f:
 for key in m.points:
     m.calculate_finite_points(key)
 
-m.fill_grid()
+np.save('./manhatten_array', m.grid)
 
 
 
