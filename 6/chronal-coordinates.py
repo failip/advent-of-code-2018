@@ -53,10 +53,10 @@ class Map:
                         two_point = False
                     elif distance == closest_distance:
                         two_point = True
-                        if two_point:
-                            self.grid[x][y] = 80
-                        else:
-                            self.grid[x][y] = closest_point
+                if two_point:
+                    self.grid[x][y] = 80
+                else:
+                    self.grid[x][y] = closest_point
         
 
 def calculate_manhatten_distance(x1, y1, x2, y2):
