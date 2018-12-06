@@ -6,7 +6,7 @@ from string import ascii_uppercase
 
 class Map:
     def __init__(self):
-        self.grid = np.zeros((360,360), dtype=(np.int64, np.int64))
+        self.grid = np.zeros((360,360),dtype=(np.int64,np.int64))
         self.points = {}
         self.finite_points = {}
 
@@ -77,10 +77,10 @@ for key in m.points:
     m.calculate_finite_points(key)
 
 #calculated with fill_grid
+m.fill_grid()
+np.save('./manhatten_array', m.grid)
 #m.grid = np.load('./manhatten_array.npy')
 
-for x in range(len(m.grid)):
-    print(np.bincount(m.grid[0]))
 
 
 
