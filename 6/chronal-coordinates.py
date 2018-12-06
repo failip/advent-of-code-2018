@@ -36,10 +36,10 @@ class Map:
     def calculate_finite_areas(self):
         for key in self.finite_points:
             self.finite_areas[key] = 0
-            for x in range(len(self.grid)):
+        for x in range(len(self.grid)):
                 for y in range(len(self.grid[0])):
-                    if (self.grid[x][y] == key):
-                        self.finite_areas[key] += 1
+                        if self.grid[x][y] in self.finite_areas:
+                            self.finite_areas[self.grid[x][y]] += 1
                                
     def fill_grid_part_one(self):
         for x in range(len(self.grid)):
