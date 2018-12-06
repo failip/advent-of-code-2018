@@ -1,42 +1,38 @@
 import numpy as np
-from shapely.geometry import Point
-from shapely.geometry import Polygon
-from string import ascii_lowercase
-from string import ascii_uppercase
+import operator
+
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
 class Map:
     def __init__(self):
-        self.grid = np.zeros((360,360),dtype=(np.int8,np.int8))
+        self.grid = np.zeros((360,360), dtype=(np.int32, np.int32))
         self.points = {}
         self.finite_points = {}
 
     def add_point(self, name, x, y):
         self.points[name] = Point(x, y)
     
-    def calculate_finite_points(self, name):
-        point = self.points[name]
-        found_triangle = False
-        for key1 in self.points:
-            for key2 in self.points:
-                if key1 == key2:
-                    pass
-                for key3 in self.points:
-                    if key3 == key2:
-                        pass
-                    first_point = self.points[key1]
-                    second_point = self.points[key2]
-                    third_point = self.points[key3]
-                    triangle = Polygon([(first_point.x, first_point.y), 
-                                        (second_point.x, second_point.y), 
-                                        (third_point.x, third_point.y)])
-                    if triangle.contains(point):
-                        self.finite_points[name] = point
-                        found_triangle = True
-                        break
-            if found_triangle:
-                break
-                                        
-    def fill_grid(self):
+    def calculate_finite_points(self):
+        infinite_points = {} 
+        for point_name in self.grid[0]:
+            if not infinite_points.get(point_name):
+                infinite_points[point_name] = 0
+        for point_name in self.grid[359]:
+            if not infinite_points.get(point_name):
+                infinite_points[point_name] = 0
+        for line in self.grid:
+            if not infinite_points.get(line[0]):
+                infinite_points[line[0]] = 0
+            if not infinite_points.get(line[359]):
+                infinite_points[line[359]] = 0
+        for key in self.points:
+            if not key in infinite_points:
+                self.finite_points[key] = self.points[key]
+                               
+    def fill_grid_part_one(self):
         for x in range(len(self.grid)):
             for y in range(len(self.grid[0])):
                 closest_point = None
@@ -55,6 +51,16 @@ class Map:
                     self.grid[x][y] = 50
                 else:
                     self.grid[x][y] = closest_point
+    
+    def fill_grid_part_two(self):
+        for x in range(len(self.grid)):
+            for y in range(len(self.grid[0])):
+                distance_to_points = 0
+                for key in self.points:
+                    point = self.points[key]
+                    distance_to_points += calculate_manhatten_distance(point.x, point.y, x, y)
+                if distance_to_points < 10000:
+                    self.grid[x][y] = 1
         
 
 def calculate_manhatten_distance(x1, y1, x2, y2):
@@ -71,32 +77,26 @@ for line in f:
     m.add_point(i, x, y)
     i += 1
 
-print('Calculating points with finite areas...')
-for key in m.points:
-    print(key)
-    m.calculate_finite_points(key)
-print('finished\n')
+def part_one():
+    m.fill_grid_part_one()
+    m.calculate_finite_points()
+    finite_areas = {}
+    for key in m.finite_points:
+        finite_areas[key] = 0
+        for x in range(len(m.grid)):
+            for y in range(len(m.grid[0])):
+                if (m.grid[x][y] == key):
+                    finite_areas[key] += 1
+    max_name = max(finite_areas.items(), key=operator.itemgetter(1))[0]
+    max_area = finite_areas[max_name
+    print('Part One:')
+    print(f'Maximum area: {max_area}')
 
-print('Calculating fill grid...')
-m.fill_grid()
-print('finished')
-np.save('./manhatten_array', m.grid)
-#m.grid = np.load('./manhatten_array.npy')
+def part_two():
+    m.grid = np.zeros((360,360),dtype=(np.int32,np.int32))
+    m.fill_grid_part_two()
+    print('Part Two:')
+    print(f'Area with distance less than 10000: {np.count_nonzero(m.grid)}')
 
-finite_areas = {}
-for key in m.finite_points:
-    finite_areas[key] = 0
-    for x in range(len(m.grid)):
-        for y in range(len(m.grid[0])):
-            if (m.grid[x][y] == key):
-                finite_areas[key] += 1
-print(finite_areas)
-
-
-
-
-
-
-
-    
-
+part_one()
+part_two()
