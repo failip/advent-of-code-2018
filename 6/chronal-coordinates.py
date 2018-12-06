@@ -54,7 +54,7 @@ class Map:
                     elif distance == closest_distance:
                         two_point = True
                         if two_point:
-                            self.grid[x][y] = -1
+                            self.grid[x][y] = 80
                         else:
                             self.grid[x][y] = key
         
@@ -62,11 +62,6 @@ class Map:
 def calculate_manhatten_distance(x1, y1, x2, y2):
     return int(abs(x1 - x2) + abs(y1 - y2))
 
-                
-
-
-
-    
 
 f = open('input', 'r')
 m = Map()
