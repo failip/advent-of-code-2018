@@ -54,7 +54,7 @@ class Map:
                     elif distance == closest_distance:
                         two_point = True
                 if two_point:
-                    self.grid[x][y] = 80
+                    self.grid[x][y] = 50
                 else:
                     self.grid[x][y] = closest_point
         
@@ -80,6 +80,10 @@ for key in m.points:
 m.fill_grid()
 np.save('./manhatten_array', m.grid)
 #m.grid = np.load('./manhatten_array.npy')
+for x in range(len(m.grid)):
+    print(len(np.bincount(m.grid[x])))
+
+print(m.finite_points.keys())
 
 
 
