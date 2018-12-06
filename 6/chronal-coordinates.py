@@ -6,7 +6,7 @@ from string import ascii_uppercase
 
 class Map:
     def __init__(self):
-        self.grid = np.zeros((360,360), dtype=np.int64)
+        self.grid = np.zeros((360,360), dtype=(np.int64, np.int64))
         self.points = {}
         self.finite_points = {}
 
