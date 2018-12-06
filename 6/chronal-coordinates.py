@@ -11,11 +11,12 @@ class Map:
         self.grid = np.zeros((360,360), dtype=(np.int8, np.int8))
         self.points = {}
         self.finite_points = {}
+        self.finite_areas = {}
 
     def add_point(self, name, x, y):
         self.points[name] = Point(x, y)
     
-    def calculate_finite_points(self):
+    def find_finite_points(self):
         infinite_points = {} 
         for point_name in self.grid[0]:
             if not infinite_points.get(point_name):
@@ -31,6 +32,14 @@ class Map:
         for key in self.points:
             if not key in infinite_points:
                 self.finite_points[key] = self.points[key]
+    
+    def calculate_finite_areas(self):
+        for key in self.finite_points:
+            self.finite_areas[key] = 0
+            for x in range(len(self.grid)):
+                for y in range(len(self.grid[0])):
+                    if (self.grid[x][y] == key):
+                        self.finite_areas[key] += 1
                                
     def fill_grid_part_one(self):
         for x in range(len(self.grid)):
@@ -51,6 +60,8 @@ class Map:
                     self.grid[x][y] = 50
                 else:
                     self.grid[x][y] = closest_point
+        self.find_finite_points()
+        self.calculate_finite_areas()
     
     def fill_grid_part_two(self):
         for x in range(len(self.grid)):
@@ -79,21 +90,13 @@ for line in f:
 
 def part_one():
     m.fill_grid_part_one()
-    m.calculate_finite_points()
-    finite_areas = {}
-    for key in m.finite_points:
-        finite_areas[key] = 0
-        for x in range(len(m.grid)):
-            for y in range(len(m.grid[0])):
-                if (m.grid[x][y] == key):
-                    finite_areas[key] += 1
-    max_name = max(finite_areas.items(), key=operator.itemgetter(1))[0]
-    max_area = finite_areas[max_name]
+    max_name = max(m.finite_areas.items(), key=operator.itemgetter(1))[0]
+    max_area = m.finite_areas[max_name]
     print('Part One:')
     print(f'Maximum area: {max_area}')
 
 def part_two():
-    m.grid = np.zeros((360,360),dtype=(np.int8,np.int8))
+    m.grid = np.zeros((360,360),dtype=(np.int8, np.int8))
     m.fill_grid_part_two()
     print('Part Two:')
     print(f'Area with distance less than 10000: {np.count_nonzero(m.grid)}')
