@@ -30,14 +30,11 @@ def get_largest_fuel_cell(grid, size):
                 max_fuel_charge = fuel_charge
     return left_corner, max_fuel_charge
 
-
-
 serial_number = int(open('input', 'r').readline())
 grid = create_grid(serial_number)
 left_corner, fuel_charge = get_largest_fuel_cell(grid, 3)
 print('Part One:')
 print(f'Left corner of largest fuel cell: {left_corner[0]},{left_corner[1]}')
-
 
 fuel_charges = np.zeros(300)
 left_corners = [None] * 300

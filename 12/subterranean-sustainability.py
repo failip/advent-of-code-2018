@@ -1,28 +1,3 @@
-def part_one(state, generations, rules):
-    initial_pot = 0
-    for generation in range(generations):
-        length = len(state)
-        if not state[0:5] == '.....':
-            state = '....' + state
-            length += 5
-            initial_pot += 4
-        if not state[length-5:length] == '.....':
-            state = state + '.....'
-            length += 5
-        next_gen = ['.'] * length
-        for i in range(2,len(state)-3):
-            key = state[i-2:i+3]
-            plant = rules.get(key)
-            if plant:
-                next_gen[i] = plant
-        state = ''.join(next_gen)
-    sum_of_plants = 0
-    print(initial_pot)
-    for i in range(len(state)):
-        if state[i] == '#':
-            sum_of_plants += i - initial_pot
-    return state, sum_of_plants
-
 def count_plants(state, offset=0):
     sum_of_plants = 0
     for i in range(len(state)):
